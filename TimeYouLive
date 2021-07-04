@@ -1,4 +1,4 @@
-print("Time you lived")
+print("Time you live")
 age = int(input('Age; '))
 month = int(input('Month(Number); '))
 isinstance(month,int)
