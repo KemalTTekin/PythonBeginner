@@ -1,0 +1,60 @@
+import sqlite3
+class Bill():
+    def __init__(self,Expense,Amount,Day,Month,Year):
+        self.Expense = Expense
+        self.Amount = Amount
+        self.Day = Day
+        self.Month = Month
+        self.Year = Year
+    def __str__(self):
+        return "Expense; {} Amount; {}  Day; {}  Month; {}  Year; {}".format(self.Expense,self.Amount,self.Day,self.Month,self.Year)
+class BillsData():
+    def __init__(self):
+        self.createconnection()
+
+    def createconnection(self):
+        self.connection = sqlite3.connect("basem.db")
+        self.cursor = self.connection.cursor()
+        command = "Create Table if not exists Bills (Expense TEXT,Amount INT,Day INT,Month INT,Year INT)"
+        self.cursor.execute(command)
+        self.connection.commit()
+    def dropconnection(self):
+        self.connection.close()
+
+    def showbills(self):
+        command = "Select * From Bills"
+        self.cursor.execute(command)
+        Bills = self.cursor.fetchall()
+        if len(Bills) == 0:
+            print("No such bill found ")
+        else:
+            for i in Bills:
+                bill = Bill(i[0],i[1],i[2],i[3],i[4])
+                print(bill)
+    def findbill(self,Expense):
+        command = "Select * From Bills Where Expense = ?"
+        self.cursor.execute(command,(Expense,))
+        Bills = self.cursor.fetchall()
+        if len(Bills) == 0:
+            print("No bill")    
+        else:
+            bill = Bill(Bills[0][0],Bills[0][1],Bills[0][2],Bills[0][3],Bills[0][4])
+            print(bill)
+    def addbill(self,Bill):
+        command = "Insert into Bills Values(?,?,?,?,?)"
+        self.cursor.execute(command,(Bill.Expense,Bill.Amount,Bill.Day,Bill.Month,Bill.Year))
+        self.connection.commit()
+    def removebill(self,Expense):
+        command = "Delete From Bills Where Expense = ?"
+        self.cursor.execute(command,(Expense,))
+
+   
+        
+        
+       
+
+
+
+
+
+
