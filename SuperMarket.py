@@ -31,7 +31,7 @@ class Database:
         self.cursor.execute(command, )
         data = self.cursor.fetchall()
         if len(data) == 0:
-            print("Hata")
+            print("Error")
         else:
             for row in data:
                 data = Product(row[0], row[1], row[2])
